@@ -1,6 +1,7 @@
 import unittest
 
 from simulator.fcfs import FCFS
+from simulator.rr import RoundRobin
 from simulator.test_utils import create_processes
 
 
@@ -89,10 +90,34 @@ class FCFSTest(unittest.TestCase, SchedulerTest):
 
 class RRTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
-        pass
+        self.scheduler = RoundRobin(4)
 
     def tearDown(self):
-        pass
+        self.scheduler.reset()
+
+    def test_lecture_example(self):
+        """Tests the example went through during lecture."""
+        processes = create_processes(
+            (1, 0, 24),
+            (2, 0, 3),
+            (3, 0, 3))
+        expected_schedule = [
+            (0, 1),
+            (4, 2),
+            (7, 3),
+            (10, 1),
+            (14, 1),
+            (18, 1),
+            (22, 1),
+            (26, 1)]
+        expected_avg_waiting_time = 5.67
+
+        expected = {
+            'schedule': expected_schedule,
+            'avg_waiting_time': expected_avg_waiting_time,
+        }
+
+        self.assert_process_schedule(processes, expected)
 
 class SRTFTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
