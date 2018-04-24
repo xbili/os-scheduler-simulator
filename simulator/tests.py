@@ -7,6 +7,9 @@ class FCFSTest(unittest.TestCase):
     def setUp(self):
         self.scheduler = FCFS()
 
+    def tearDown(self):
+        self.scheduler.reset()
+
     def test_basic_scheduling(self):
         """
         Test case for the basic example provided in the assignment
@@ -75,16 +78,12 @@ class FCFSTest(unittest.TestCase):
 
         self.assert_process_schedule(processes, expected)
 
-
     def assert_process_schedule(self, processes, expected):
         schedule = self.scheduler.schedule(processes)
         avg_waiting_time = self.scheduler.avg_waiting_time
 
         self.assertEqual(schedule, expected['schedule'])
         self.assertEqual(avg_waiting_time, expected['avg_waiting_time'])
-
-    def tearDown(self):
-        self.scheduler.reset()
 
 class RRTest(unittest.TestCase):
     def setUp(self):
