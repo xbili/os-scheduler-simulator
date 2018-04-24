@@ -10,3 +10,6 @@ class Process(object):
     def __repr__(self):
         return ('[id %d : arrive_time %d,  burst_time %d]' %
                 (self.id, self.arrive_time, self.burst_time))
+
+    def __cmp__(self, other):
+        return cmp(self.burst_time, other.burst_time)
