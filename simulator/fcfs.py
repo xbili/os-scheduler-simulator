@@ -7,5 +7,28 @@ class FCFS(Scheduler):
         super(FCFS, self).__init__()
 
     def schedule(self, processes):
+        """
+        We simply sort the processes by the time that they come in by, and
+        only change process as the processes finish their execution on the
+        CPU.
+        """
         super(FCFS, self).schedule(processes)
-        # TODO: Implementation
+
+        # Sort by the order that they came in
+        ordered = sorted(processes, key=lambda x: x.arrive_time)
+
+        res = []
+        for idx, process in enumerate(ordered):
+            self.processes += 1
+
+            # Output current time and next pid
+            res += [(self.current_time, process.id)]
+            self.current_time += process.burst_time
+
+            # Every other process that arrive while this process is executing
+            # will have to wait
+            for other in ordered[idx+1:]:
+                if other.arrive_time < self.current_time:
+                    self.waiting_time += self.current_time - other.arrive_time
+
+        return res
