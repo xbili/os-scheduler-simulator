@@ -36,7 +36,7 @@ class Scheduler(ABC):
     @property
     def avg_waiting_time(self):
         """Returns the average waiting time of a schedule."""
-        return float(self.waiting_time) / self.processes
+        return round(float(self.waiting_time) / self.processes, 2)
 
     def __repr__(self):
         """Return the scheduler's statistics as a string."""

@@ -21,14 +21,12 @@ class FCFS(Scheduler):
         for idx, process in enumerate(ordered):
             self.processes += 1
 
+            if self.current_time < process.arrive_time:
+                self.current_time = process.arrive_time
+
             # Output current time and next pid
             res += [(self.current_time, process.id)]
+            self.waiting_time += self.current_time - process.arrive_time
             self.current_time += process.burst_time
-
-            # Every other process that arrive while this process is executing
-            # will have to wait
-            for other in ordered[idx+1:]:
-                if other.arrive_time < self.current_time:
-                    self.waiting_time += self.current_time - other.arrive_time
 
         return res
