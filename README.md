@@ -23,7 +23,7 @@ Given an input from either `stdin` or a file with each line in the format:
 
 `<process id> <arriving time> <burst time>`
 
-The program will print a line in the following format every time the CPU
+The program will write a line in the following format every time the CPU
 performs a context switch:
 
 `(<timestamp>, <process id>)`
@@ -31,6 +31,9 @@ performs a context switch:
 And lastly output the average waiting time:
 
 `Average waiting time <waiting time>`
+
+The outputs will be written in a file with the name of the scheduler and stored
+in the folder called `schedules`.
 
 ## Test Cases
 
