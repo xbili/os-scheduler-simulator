@@ -25,18 +25,24 @@ class RoundRobin(Scheduler):
             while ordered[-1].arrive_time <= self.current_time:
                 self.q += [ordered.pop()]
 
+            # Time elapsed
+            elapsed = self.time_q
+
             if self.q:
                 # Take the next element in the ready queue
                 nxt = self.q.popleft()
 
                 res += [(self.current_time, nxt.id)]
 
-                # Decrement the burst time
-                nxt.burst_time -= self.time_q
+                if nxt.burst_time > self.time_q:
+                    # Decrement the burst time
+                    nxt.burst_time -= self.time_q
 
-                # Add it back into the queue
-                self.q += [nxt]
+                    # Add it back into the queue
+                    self.q += [nxt]
+                else:
+                    elapsed = nxt.burst_time
 
-            self.current_time += self.time_q
+            self.current_time += elapsed
 
         return res
