@@ -3,7 +3,16 @@ import unittest
 from simulator.fcfs import FCFS
 from simulator.test_utils import create_processes
 
-class FCFSTest(unittest.TestCase):
+
+class SchedulerTest(object):
+    def assert_process_schedule(self, processes, expected):
+        schedule = self.scheduler.schedule(processes)
+        avg_waiting_time = self.scheduler.avg_waiting_time
+
+        self.assertEqual(schedule, expected['schedule'])
+        self.assertEqual(avg_waiting_time, expected['avg_waiting_time'])
+
+class FCFSTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
         self.scheduler = FCFS()
 
@@ -78,28 +87,21 @@ class FCFSTest(unittest.TestCase):
 
         self.assert_process_schedule(processes, expected)
 
-    def assert_process_schedule(self, processes, expected):
-        schedule = self.scheduler.schedule(processes)
-        avg_waiting_time = self.scheduler.avg_waiting_time
-
-        self.assertEqual(schedule, expected['schedule'])
-        self.assertEqual(avg_waiting_time, expected['avg_waiting_time'])
-
-class RRTest(unittest.TestCase):
+class RRTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
         pass
 
     def tearDown(self):
         pass
 
-class SRTFTest(unittest.TestCase):
+class SRTFTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
         pass
 
     def tearDown(self):
         pass
 
-class SJFTest(unittest.TestCase):
+class SJFTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
         pass
 
