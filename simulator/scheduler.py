@@ -27,8 +27,6 @@ class Scheduler(ABC):
         if self.processes > 0 or self.current_time > 0 or self.waiting_time > 0:
             print(msg_warn)
 
-        pass
-
     def reset(self):
         """Resets the scheulder's internal state."""
         self.processes = 0
