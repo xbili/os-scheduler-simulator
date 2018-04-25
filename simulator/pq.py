@@ -4,7 +4,7 @@ import itertools
 REMOVED = '<removed-task>'
 
 class PriorityQueue(object):
-    """Abstract implementation of a PriorityQueue."""
+    """Implementation of a PriorityQueue. Implemented as a min-heap"""
 
     def __init__(self):
         self.pq = []
@@ -12,6 +12,7 @@ class PriorityQueue(object):
         self.counter = itertools.count()
 
     def add(self, task, priority=0):
+        """Adds an entry into priority queue with a specified priority."""
         if task in self.entry_finder:
             self.remove(task)
 
@@ -21,10 +22,12 @@ class PriorityQueue(object):
         heapq.heappush(self.pq, entry)
 
     def remove(self, task):
+        """Removes an entry from the priority queue."""
         entry = self.entry_finder.pop(task)
         entry[-1] = REMOVED
 
     def pop(self):
+        """Removes the smallest element in the priority queue."""
         while self.pq:
             priority, count, task = heapq.heappop(self.pq)
             if task is not REMOVED:
@@ -34,4 +37,5 @@ class PriorityQueue(object):
         raise KeyError('pop from empty priority queue')
 
     def is_empty(self):
+        """Returns true if the priority queue is empty."""
         return len(self.pq) == 0
