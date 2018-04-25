@@ -9,6 +9,7 @@ class SJF(Scheduler):
     def __init__(self, alpha=0.5):
         super(SJF, self).__init__()
         self.alpha = alpha
+        self.pq = PriorityQueue()
 
     def schedule(self, processes):
         """
@@ -17,18 +18,17 @@ class SJF(Scheduler):
         """
         super(SJF, self).schedule(processes)
 
-        ordered = deque(processes)
-        res, pq = [], PriorityQueue()
-        while ordered or not pq.is_empty():
+        ordered, res = deque(processes), []
+        while ordered or not self.pq.is_empty():
             elapsed = 1
 
             # Push all arrived processes into the ready queue
             while ordered and ordered[0].arrive_time <= self.current_time:
                 nxt = ordered.popleft()
-                pq.add(nxt, priority=nxt.burst_time)
+                self.pq.add(nxt, priority=nxt.burst_time)
 
-            if not pq.is_empty():
-                active = pq.pop()
+            if not self.pq.is_empty():
+                active = self.pq.pop()
                 res += [(self.current_time, active.id)]
                 elapsed = active.burst_time
                 self.waiting_time += (self.current_time - active.arrive_time)
