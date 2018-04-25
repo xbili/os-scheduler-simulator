@@ -7,9 +7,9 @@ class PriorityQueue(object):
     """Abstract implementation of a PriorityQueue."""
 
     def __init__(self):
-        pq = []
-        entry_finder = {}
-        counter = itertools.count()
+        self.pq = []
+        self.entry_finder = {}
+        self.counter = itertools.count()
 
     def add(self, task, priority=0):
         if task in self.entry_finder:
@@ -17,18 +17,21 @@ class PriorityQueue(object):
 
         count = next(self.counter)
         entry = [priority, count, task]
-        entry_finder[task] = entry
-        heapq.heappush(pq, entry)
+        self.entry_finder[task] = entry
+        heapq.heappush(self.pq, entry)
 
     def remove(self, task):
-        entry = entry_finder.pop(task)
+        entry = self.entry_finder.pop(task)
         entry[-1] = REMOVED
 
     def pop(self):
-        while pq:
-            priority, count, task = heapq.heapop(pq)
+        while self.pq:
+            priority, count, task = heapq.heappop(self.pq)
             if task is not REMOVED:
-                del entry_finder[task]
+                del self.entry_finder[task]
                 return task
 
         raise KeyError('pop from empty priority queue')
+
+    def is_empty(self):
+        return len(self.pq) == 0

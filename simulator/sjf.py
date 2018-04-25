@@ -1,6 +1,7 @@
 import heapq
 from collections import deque
 
+from simulator.pq import PriorityQueue
 from simulator.scheduler import Scheduler
 
 class SJF(Scheduler):
@@ -16,17 +17,18 @@ class SJF(Scheduler):
         """
         super(SJF, self).schedule(processes)
 
-        ordered = deque(sorted(processes, key=lambda x: x.arrive_time))
-        res, pq = [], []
-        while ordered or pq:
+        ordered = deque(processes)
+        res, pq = [], PriorityQueue()
+        while ordered or not pq.is_empty():
             elapsed = 1
 
             # Push all arrived processes into the ready queue
             while ordered and ordered[0].arrive_time <= self.current_time:
-                heapq.heappush(pq, ordered.popleft())
+                nxt = ordered.popleft()
+                pq.add(nxt, priority=nxt.burst_time)
 
-            if pq:
-                active = heapq.heappop(pq)
+            if not pq.is_empty():
+                active = pq.pop()
                 res += [(self.current_time, active.id)]
                 elapsed = active.burst_time
                 self.waiting_time += (self.current_time - active.arrive_time)
