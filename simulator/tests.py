@@ -141,7 +141,7 @@ class SJFTest(unittest.TestCase, SchedulerTest):
             (0, 1),
             (2, 2),
             (12, 3)]
-        expected_avg_waiting_time = 0.67
+        expected_avg_waiting_time = 3.67
 
         expected = {
             'schedule': expected_schedule,
