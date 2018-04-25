@@ -121,6 +121,40 @@ class RRTest(unittest.TestCase, SchedulerTest):
 
         self.assert_process_schedule(processes, expected)
 
+    def test_techtud_example(self):
+        """http://www.techtud.com/example/solved-example-rr-round-robin"""
+
+        # Time quantum is 3 for this example
+        self.scheduler = RoundRobin(3)
+        processes = create_processes(
+            (4, 0, 9),
+            (5, 1, 2),
+            (3, 2, 7),
+            (2, 3, 6),
+            (1, 4, 5),
+            (6, 5, 3))
+        expected_schedule = [
+            (0, 4),
+            (3, 5),
+            (5, 3),
+            (8, 2),
+            (11, 1),
+            (14, 4),
+            (17, 6),
+            (20, 3),
+            (23, 2),
+            (26, 1),
+            (28, 4),
+            (31, 3)]
+        expected_avg_waiting_time = 16.17
+
+        expected = {
+            'schedule': expected_schedule,
+            'avg_waiting_time': expected_avg_waiting_time,
+        }
+
+        self.assert_process_schedule(processes, expected)
+
 class SRTFTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
         self.scheduler = SRTF()

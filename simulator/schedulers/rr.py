@@ -13,42 +13,41 @@ class RoundRobin(Scheduler):
         # We make use of a deque to keep track of the ready queue
         self.q = deque()
 
+        # Current running task
+        self.active = None
+
     def schedule(self, processes):
         super(RoundRobin, self).schedule(processes)
 
-        # Sort the tasks in reverse order so that we can pop tasks off
-        ordered = list(reversed(sorted(processes, key=lambda x: -x.arrive_time)))
+        ordered = deque(processes)
 
         # Keep running round robin until either we run out of processes
         res = []
-        self.q += [ordered.pop()]
+        self.q += [ordered.popleft()]
         while self.q or ordered:
             # Check if there are any more tasks that should come into the
             # ready queue.
-            while ordered and ordered[-1].arrive_time <= self.current_time:
-                self.q += [ordered.pop()]
+            while ordered and ordered[0].arrive_time <= self.current_time:
+                self.q += [ordered.popleft()]
 
             elapsed = self.time_q
 
-            if self.q:
-                # Take the next element in the ready queue
-                nxt = self.q.popleft()
-
-                res += [(self.current_time, nxt.id)]
-
-                if nxt.burst_time > self.time_q:
-                    # Decrement the burst time
-                    nxt.burst_time -= self.time_q
-
-                    # Add it back into the queue
-                    self.q += [nxt]
+            if self.active:
+                if self.active.burst_time <= self.time_q:
+                    elapsed = self.active.burst_time
+                    self.active = None
                 else:
-                    elapsed = nxt.burst_time
+                    self.active.burst_time -= self.time_q
 
-                # Update waiting time
-                for process in self.q:
-                    if process.id != nxt.id:
-                        self.waiting_time += elapsed
+            if self.q:
+                if self.active:
+                    self.q += [self.active]
+                self.active = self.q.popleft()
+
+                res += [(self.current_time, self.active.id)]
+
+            for p in self.q:
+                self.waiting_time += elapsed
 
             self.current_time += elapsed
 
