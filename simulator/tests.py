@@ -139,8 +139,8 @@ class SJFTest(unittest.TestCase, SchedulerTest):
 
         expected_schedule = [
             (0, 1),
-            (2, 3),
-            (3, 2)]
+            (2, 2),
+            (12, 3)]
         expected_avg_waiting_time = 0.67
 
         expected = {

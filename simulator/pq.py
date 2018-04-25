@@ -38,4 +38,4 @@ class PriorityQueue(object):
 
     def is_empty(self):
         """Returns true if the priority queue is empty."""
-        return len(self.pq) == 0
+        return len(self.entry_finder) == 0

@@ -27,19 +27,25 @@ class SJF(Scheduler):
             # Push all arrived processes into the ready queue
             while ordered and ordered[0].arrive_time <= self.current_time:
                 nxt = ordered.popleft()
+                self.pq.add(nxt, priority=0)
 
-                # Predict the next CPU burst for this process
-                prediction = self.predict_next_burst(tau[nxt.id], nxt.burst_time)
-                tau[nxt.id] = prediction
+            # Update estimates for processes in ready queue
+            others = [entry[2] for entry in self.pq.pq]
+            for process in others:
+                tau[process.id] = self.predict_next_burst(tau[process.id],
+                                                          prev_burst)
+                self.pq.remove(process)
+                self.pq.add(process, priority=tau[process.id])
 
-                self.pq.add(nxt, priority=prediction)
-
+            # Run the next burst
             if not self.pq.is_empty():
                 active = self.pq.pop()
-                res += [(self.current_time, active.id)]
                 elapsed = active.burst_time
-                curr_burst = active.burst_time
+                prev_burst = active.burst_time
+                res += [(self.current_time, active.id)]
                 self.waiting_time += (self.current_time - active.arrive_time)
+            else:
+                prev_burst = 0
 
             self.current_time += elapsed
 
