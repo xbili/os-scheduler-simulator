@@ -16,8 +16,6 @@ class RoundRobin(Scheduler):
     def schedule(self, processes):
         super(RoundRobin, self).schedule(processes)
 
-        self.processes = len(processes)
-
         # Sort the tasks in reverse order so that we can pop tasks off
         ordered = list(reversed(sorted(processes, key=lambda x: -x.arrive_time)))
 

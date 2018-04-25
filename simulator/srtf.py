@@ -8,4 +8,3 @@ class SRTF(Scheduler):
 
     def schedule(self, processes):
         super(SRTF, self).schedule(processes)
-        # TODO: Implementation

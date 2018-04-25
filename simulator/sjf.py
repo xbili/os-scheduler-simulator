@@ -5,6 +5,9 @@ from simulator.scheduler import Scheduler
 
 class SJF(Scheduler):
     """Shortest Job First (SJF) scheduler."""
+    def __init__(self, alpha=0.5):
+        super(SJF, self).__init__()
+        self.alpha = alpha
 
     def schedule(self, processes):
         """
@@ -12,8 +15,6 @@ class SJF(Scheduler):
         time left.
         """
         super(SJF, self).schedule(processes)
-
-        self.processes = len(processes)
 
         ordered = deque(sorted(processes, key=lambda x: x.arrive_time))
         res, pq = [], []
