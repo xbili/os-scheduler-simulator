@@ -3,6 +3,7 @@ import unittest
 from simulator.fcfs import FCFS
 from simulator.rr import RoundRobin
 from simulator.sjf import SJF
+from simulator.srtf import SRTF
 from simulator.test_utils import create_processes
 
 
@@ -122,10 +123,29 @@ class RRTest(unittest.TestCase, SchedulerTest):
 
 class SRTFTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
-        pass
+        self.scheduler = SRTF()
+
+    def test_simple_example(self):
+        processes = create_processes(
+            (1, 0, 10),
+            (2, 1, 2),
+            (3, 2, 5))
+        expected_schedule = [
+            (0, 1),
+            (1, 2),
+            (3, 3),
+            (8, 1)]
+        expected_avg_waiting_time = 0.00
+
+        expected = {
+            'schedule': expected_schedule,
+            'avg_waiting_time': expected_avg_waiting_time
+        }
+
+        self.assert_process_schedule(processes, expected)
 
     def tearDown(self):
-        pass
+        self.scheduler.reset()
 
 class SJFTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
