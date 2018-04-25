@@ -151,4 +151,4 @@ class SJFTest(unittest.TestCase, SchedulerTest):
         self.assert_process_schedule(processes, expected)
 
     def tearDown(self):
-        pass
+        self.scheduler.reset()
