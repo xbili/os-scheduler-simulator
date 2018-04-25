@@ -36,6 +36,16 @@ class PriorityQueue(object):
 
         raise KeyError('pop from empty priority queue')
 
+    def peek(self):
+        """
+        Returns, but doesn't remove the smallest element in the priority
+        queue.
+        """
+        if self.is_empty():
+            return None
+
+        return self.pq[0][2]
+
     def is_empty(self):
         """Returns true if the priority queue is empty."""
         return len(self.entry_finder) == 0
