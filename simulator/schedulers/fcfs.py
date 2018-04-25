@@ -1,4 +1,4 @@
-from simulator.scheduler import Scheduler
+from simulator.schedulers.scheduler import Scheduler
 
 class FCFS(Scheduler):
     """First Come First Serve (FCFS) scheduler."""

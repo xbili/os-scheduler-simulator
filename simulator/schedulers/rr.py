@@ -1,6 +1,6 @@
 from collections import deque
 
-from simulator.scheduler import Scheduler
+from simulator.schedulers.scheduler import Scheduler
 
 class RoundRobin(Scheduler):
     """Constant time quantum Round Robin scheduler."""

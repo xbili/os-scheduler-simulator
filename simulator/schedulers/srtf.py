@@ -1,7 +1,7 @@
 from collections import deque
 
-from simulator.pq import PriorityQueue
-from simulator.scheduler import Scheduler
+from simulator.core.pq import PriorityQueue
+from simulator.schedulers.scheduler import Scheduler
 
 class SRTF(Scheduler):
     """

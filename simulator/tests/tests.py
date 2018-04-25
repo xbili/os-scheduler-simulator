@@ -1,10 +1,10 @@
 import unittest
 
-from simulator.fcfs import FCFS
-from simulator.rr import RoundRobin
-from simulator.sjf import SJF
-from simulator.srtf import SRTF
-from simulator.test_utils import create_processes
+from simulator.schedulers.fcfs import FCFS
+from simulator.schedulers.rr import RoundRobin
+from simulator.schedulers.sjf import SJF
+from simulator.schedulers.srtf import SRTF
+from simulator.tests.test_utils import create_processes
 
 
 class SchedulerTest(object):
