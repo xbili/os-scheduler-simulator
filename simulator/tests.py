@@ -135,7 +135,7 @@ class SRTFTest(unittest.TestCase, SchedulerTest):
             (1, 2),
             (3, 3),
             (8, 1)]
-        expected_avg_waiting_time = 0.00
+        expected_avg_waiting_time = 2.67
 
         expected = {
             'schedule': expected_schedule,

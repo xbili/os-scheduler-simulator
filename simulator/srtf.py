@@ -27,6 +27,7 @@ class SRTF(Scheduler):
                 nxt = ordered.popleft()
                 self.pq.add(nxt, priority=nxt.burst_time)
 
+            # Handle case where there is no current active task
             if not active and not self.pq.is_empty():
                 # Set a new job in the ready queue to be active
                 active = self.pq.pop()
@@ -37,6 +38,9 @@ class SRTF(Scheduler):
                 self.current_time += 1
                 continue
 
+            # Handle cases for replacing jobs. Either:
+            # 1. They have completed execution, or
+            # 2. They are being preempted.
             if active.burst_time == 0:
                 # Load next job
                 if not self.pq.is_empty():
@@ -58,5 +62,8 @@ class SRTF(Scheduler):
 
             active.burst_time -= 1
             self.current_time += 1
+
+            # Every job in the PQ is waiting
+            self.waiting_time += len(self.pq)
 
         return res
