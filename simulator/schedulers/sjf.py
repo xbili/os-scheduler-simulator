@@ -30,7 +30,7 @@ class SJF(Scheduler):
                 self.pq.add(nxt, priority=0)
 
             # Update estimates for processes in ready queue
-            others = [entry[2] for entry in self.pq.pq]
+            others = [entry[2] for _, entry in self.pq.entry_finder.items()]
             for process in others:
                 tau[process.id] = self.predict_next_burst(tau[process.id],
                                                           prev_burst)
