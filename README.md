@@ -15,11 +15,7 @@ To run:
 
 `python -m simulator <filename>`
 
-or
-
-`python -m simulator < filename`
-
-Given an input from either `stdin` or a file with each line in the format:
+Input file should have the format for each line:
 
 `<process id> <arriving time> <burst time>`
 
