@@ -49,7 +49,7 @@ class RoundRobin(Scheduler):
 
                 # Update waiting time
                 for process in self.q:
-                    if process != nxt:
+                    if process.id != nxt.id:
                         self.waiting_time += elapsed
 
             self.current_time += elapsed

@@ -21,15 +21,14 @@ class SJF(Scheduler):
             elapsed = 1
 
             # Push all arrived processes into the ready queue
-            while ordered and ordered[0].arrive_time <= current_time:
+            while ordered and ordered[0].arrive_time <= self.current_time:
                 heapq.heappush(pq, ordered.popleft())
 
-            if q:
+            if pq:
                 active = heapq.heappop(pq)
                 res += [(self.current_time, active.id)]
                 elapsed = active.burst_time
-                self.waiting_time += (self.current_time + active.burst_time) -
-                    self.arrive_time
+                self.waiting_time += (self.current_time - active.arrive_time)
 
             self.current_time += elapsed
 
