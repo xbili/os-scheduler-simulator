@@ -89,6 +89,11 @@ class Scheduler(ABC):
 
     @abstractmethod
     def perform_schedule(self):
+        """
+        The main algorithm for scheduling should be implemented in this method.
+
+        Returns a new process - the next process to be run.
+        """
         pass
 
     @property
