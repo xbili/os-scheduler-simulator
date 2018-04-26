@@ -9,7 +9,15 @@ class SJF(Scheduler):
     def __init__(self, alpha=0.5):
         super(SJF, self).__init__()
         self.alpha = alpha
-        self.pq = PriorityQueue()
+
+        # We use a custom PriorityQueue with similar API instead
+        self.q = PriorityQueue()
+
+        # Keeps track of all estimates for CPU burst time
+        self.tau = {}
+
+        # Keeps track of the previous CPU burst time
+        self.prev_burst = 0
 
     def schedule(self, processes):
         """
@@ -18,39 +26,49 @@ class SJF(Scheduler):
         """
         super(SJF, self).schedule(processes)
 
-        tau = {process.id: 0 for process in processes}
-        ordered, res = deque(processes), []
-        prev_burst = 0
-        while ordered or not self.pq.is_empty():
-            elapsed = 1
+        self.tau = {process.id: 0 for process in processes}
+        self.ordered, res = deque(processes), []
 
-            # Push all arrived processes into the ready queue
-            while ordered and ordered[0].arrive_time <= self.current_time:
-                nxt = ordered.popleft()
-                self.pq.add(nxt, priority=0)
-
-            # Update estimates for processes in ready queue
-            others = [entry[2] for _, entry in self.pq.entry_finder.items()]
-            for process in others:
-                tau[process.id] = self.predict_next_burst(tau[process.id],
-                                                          prev_burst)
-                self.pq.remove(process)
-                self.pq.add(process, priority=tau[process.id])
-
-            # Run the next burst
-            if not self.pq.is_empty():
-                active = self.pq.pop()
-                elapsed = active.burst_time
-                prev_burst = active.burst_time
-                res += [(self.current_time, active.id)]
-                self.waiting_time += (self.current_time - active.arrive_time)
-            else:
-                prev_burst = 0
-
-            self.current_time += elapsed
+        while self.q or self.ordered or self.active:
+            self.enqueue_new_jobs()
+            if self.timer_interrupt():
+                process = self.perform_schedule()
+                if process:
+                    res += [(self.current_time, process.id)]
+            self.step()
 
         return res
 
+    def enqueue_new_jobs(self):
+        """
+        (OVERRIDE) - Scheduler.enqueue_new_jobs
+        We need to override this to make use of our PriorityQueue API instead.
+        """
+        while self.ordered and self.ordered[0].arrive_time <= self.current_time:
+            nxt = self.ordered.popleft()
+            self.q.add(nxt, priority=0)
+
+    def perform_schedule(self):
+        """
+        Returns the next job to execute in the SJF algorithm, and updates the
+        predictions for all processes in the ready queue.
+        """
+        self.active = self.q.pop() if self.q else None
+
+        # Update predition values
+        others = [entry[2] for _, entry in self.q.entry_finder.items()]
+        for process in others:
+            self.tau[process.id] = self.predict_next_burst(self.tau[process.id],
+                                                           self.prev_burst)
+            self.q.remove(process)
+            self.q.add(process, priority=self.tau[process.id])
+
+        if self.active:
+            self.prev_burst = self.active.burst_time
+
+        return self.active
+
     def predict_next_burst(self, current_prediction, current_burst_time):
+        """Returns the predicted time of the next burst of the process."""
         return self.alpha * current_burst_time +\
             (1-self.alpha) * current_prediction
