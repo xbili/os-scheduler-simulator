@@ -64,10 +64,10 @@ class RoundRobin(Scheduler):
         Timer interrupts only when the current active task has ran out of
         its time quantum or has stopped execution.
         """
+        default = super(RoundRobin, self).timer_interrupt()
         depleted = self.curr_q == 0
-        stopped = self.active.burst_time == 0 if self.active else False
 
-        return depleted or stopped
+        return default or depleted
 
     def step(self):
         super(RoundRobin, self).step()

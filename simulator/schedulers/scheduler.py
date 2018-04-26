@@ -64,6 +64,14 @@ class Scheduler(ABC):
         while self.ordered and self.ordered[0].arrive_time == self.current_time:
             self.q += [self.ordered.popleft()]
 
+    def timer_interrupt(self):
+        """
+        Default only interrupts when a task has completed its execution
+        time.
+        """
+        completed = self.active.burst_time == 0 if self.active else False
+        return completed
+
     @property
     def avg_waiting_time(self):
         """Returns the average waiting time of a schedule."""
