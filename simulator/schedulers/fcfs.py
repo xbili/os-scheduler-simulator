@@ -1,5 +1,3 @@
-from collections import deque
-
 from simulator.schedulers.scheduler import Scheduler
 
 class FCFS(Scheduler):

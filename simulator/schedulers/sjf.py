@@ -1,5 +1,3 @@
-from collections import deque
-
 from simulator.core.pq import PriorityQueue
 from simulator.schedulers.scheduler import Scheduler
 
