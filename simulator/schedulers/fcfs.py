@@ -8,22 +8,6 @@ class FCFS(Scheduler):
     def __init__(self):
         super(FCFS, self).__init__()
 
-    def schedule(self, processes):
-        super(FCFS, self).schedule(processes)
-
-        # Queue up all processes
-        self.ordered = deque(processes)
-
-        res = []
-        while self.q or self.ordered or self.active:
-            self.enqueue_new_jobs()
-            if self.timer_interrupt():
-                process = self.perform_schedule()
-                if process:
-                    res += [(self.current_time, process.id)]
-            self.step()
-        return res
-
     def perform_schedule(self):
         """
         We simply sort the processes by the time that they come in by, and

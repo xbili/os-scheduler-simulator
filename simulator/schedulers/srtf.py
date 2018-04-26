@@ -16,20 +16,6 @@ class SRTF(Scheduler):
         # Ready queue
         self.q = PriorityQueue()
 
-    def schedule(self, processes):
-        super(SRTF, self).schedule(processes)
-
-        self.ordered, res = deque(processes), []
-        while self.q or self.ordered or self.active:
-            self.enqueue_new_jobs()
-            if self.timer_interrupt():
-                process = self.perform_schedule()
-                if process:
-                    res += [(self.current_time, process.id)]
-            self.step()
-
-        return res
-
     def perform_schedule(self):
         """
         We perform scheduling in either of the two scenarions:

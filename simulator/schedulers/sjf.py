@@ -23,20 +23,8 @@ class SJF(Scheduler):
         We make use of a heap to keep track of the task with the longest burst
         time left.
         """
-        super(SJF, self).schedule(processes)
-
         self.tau = {process.id: 0 for process in processes}
-        self.ordered, res = deque(processes), []
-
-        while self.q or self.ordered or self.active:
-            self.enqueue_new_jobs()
-            if self.timer_interrupt():
-                process = self.perform_schedule()
-                if process:
-                    res += [(self.current_time, process.id)]
-            self.step()
-
-        return res
+        return super(SJF, self).schedule(processes)
 
     def enqueue_new_jobs(self):
         """

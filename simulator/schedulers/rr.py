@@ -14,23 +14,6 @@ class RoundRobin(Scheduler):
         # Tracks the current interval in a time quantum
         self.curr_q = 0
 
-    def schedule(self, processes):
-        super(RoundRobin, self).schedule(processes)
-
-        # Queue up all processes
-        self.ordered = deque(processes)
-
-        res = []
-        while self.q or self.ordered or self.active:
-            self.enqueue_new_jobs()
-            if self.timer_interrupt():
-                process = self.perform_schedule()
-                if process:
-                    res += [(self.current_time, process.id)]
-            self.step()
-
-        return res
-
     def perform_schedule(self):
         """
         Returns the next job to execute in the round robin algorithm.

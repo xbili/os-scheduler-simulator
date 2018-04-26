@@ -38,6 +38,17 @@ class Scheduler(ABC):
 
         self.processes = len(processes)
 
+        self.ordered, res = deque(processes), []
+        while self.q or self.ordered or self.active:
+            self.enqueue_new_jobs()
+            if self.timer_interrupt():
+                process = self.perform_schedule()
+                if process:
+                    res += [(self.current_time, process.id)]
+            self.step()
+
+        return res
+
     def reset(self):
         """Resets the scheulder's internal state."""
         self.processes = 0
