@@ -87,6 +87,10 @@ class Scheduler(ABC):
         completed = self.active.burst_time == 0 if self.active else False
         return completed
 
+    @abstractmethod
+    def perform_schedule(self):
+        pass
+
     @property
     def avg_waiting_time(self):
         """Returns the average waiting time of a schedule."""
