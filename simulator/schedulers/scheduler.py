@@ -1,3 +1,4 @@
+from collections import deque
 from abc import ABC, abstractmethod
 
 class Scheduler(ABC):
@@ -13,6 +14,15 @@ class Scheduler(ABC):
         self.processes = 0
         self.current_time = 0
         self.waiting_time = 0
+
+        # Ready Queue
+        self.q = deque()
+
+        # Current running task
+        self.active = None
+
+        # Ordered tasks
+        ordered = deque()
 
     @abstractmethod
     def schedule(self, processes):
@@ -34,6 +44,20 @@ class Scheduler(ABC):
         self.processes = 0
         self.current_time = 0
         self.waiting_time = 0
+
+    def step(self):
+        """Performs a single step in time."""
+
+        # Increment time
+        self.current_time += 1
+
+        # Decrement burst time for the active task (if there is one)
+        if self.active:
+            self.active.burst_time -= 1
+
+        # Update waiting time
+        for process in self.q:
+            self.waiting_time += 1
 
     @property
     def avg_waiting_time(self):

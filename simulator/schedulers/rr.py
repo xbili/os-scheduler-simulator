@@ -14,15 +14,6 @@ class RoundRobin(Scheduler):
         # Tracks the current interval in a time quantum
         self.curr_q = 0
 
-        # Ready Queue
-        self.q = deque()
-
-        # Current running task
-        self.active = None
-
-        # Ordered tasks
-        ordered = deque()
-
     def schedule(self, processes):
         super(RoundRobin, self).schedule(processes)
 
@@ -86,17 +77,6 @@ class RoundRobin(Scheduler):
         return depleted or stopped
 
     def step(self):
-        """Performs a single step in time."""
-        # Increment interval in time quantum
+        super(RoundRobin, self).step()
+
         self.curr_q = (self.curr_q + 1) % self.time_q
-
-        # Increment time
-        self.current_time += 1
-
-        # Decrement burst time for the active task (if there is one)
-        if self.active:
-            self.active.burst_time -= 1
-
-        # Update waiting time
-        for process in self.q:
-            self.waiting_time += 1
