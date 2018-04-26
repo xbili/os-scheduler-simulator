@@ -1,3 +1,5 @@
+from collections import deque
+
 from simulator.schedulers.scheduler import Scheduler
 
 class FCFS(Scheduler):
@@ -7,24 +9,38 @@ class FCFS(Scheduler):
         super(FCFS, self).__init__()
 
     def schedule(self, processes):
+        super(FCFS, self).schedule(processes)
+
+        # Queue up all processes
+        self.ordered = deque(processes)
+
+        res = []
+        while self.q or self.ordered or self.active:
+            self.enqueue_new_jobs()
+            if self.timer_interrupt():
+                process = self.perform_schedule()
+                if process:
+                    res += [(self.current_time, process.id)]
+            self.step()
+        return res
+
+    def perform_schedule(self):
         """
         We simply sort the processes by the time that they come in by, and
         only change process as the processes finish their execution on the
         CPU.
         """
-        super(FCFS, self).schedule(processes)
+        # No active current job
+        if not self.active:
+            if self.q:
+                self.active = self.q.popleft()
+            return self.active
 
-        # Sort by the order that they came in
-        ordered = sorted(processes, key=lambda x: x.arrive_time)
+        # Get next
+        if self.q:
+            nxt = self.q.popleft()
+        else:
+            nxt = None
 
-        res = []
-        for idx, process in enumerate(ordered):
-            if self.current_time < process.arrive_time:
-                self.current_time = process.arrive_time
-
-            # Output current time and next pid
-            res += [(self.current_time, process.id)]
-            self.waiting_time += self.current_time - process.arrive_time
-            self.current_time += process.burst_time
-
-        return res
+        self.active = nxt
+        return nxt

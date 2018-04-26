@@ -15,16 +15,15 @@ class Scheduler(ABC):
         self.current_time = 0
         self.waiting_time = 0
 
-        # Ready Queue
+        # Ready Queue - can be any kind of queue
         self.q = deque()
 
         # Current running task
         self.active = None
 
         # Ordered tasks
-        ordered = deque()
+        self.ordered = deque()
 
-    @abstractmethod
     def schedule(self, processes):
         """
         Given processes, schedule the order for processes to run. To be
@@ -44,6 +43,9 @@ class Scheduler(ABC):
         self.processes = 0
         self.current_time = 0
         self.waiting_time = 0
+        self.q = deque()
+        self.active = None
+        self.ordered = deque()
 
     def step(self):
         """Performs a single step in time."""
@@ -60,15 +62,17 @@ class Scheduler(ABC):
 
     def enqueue_new_jobs(self):
         """Enqueues new jobs that just came in into the ready queue."""
-
         while self.ordered and self.ordered[0].arrive_time == self.current_time:
             self.q += [self.ordered.popleft()]
 
     def timer_interrupt(self):
         """
         Default only interrupts when a task has completed its execution
-        time.
+        time, or when a new tasks come into an idle CPU.
         """
+        if not self.active:
+            return True
+
         completed = self.active.burst_time == 0 if self.active else False
         return completed
 
