@@ -36,3 +36,14 @@ in the folder called `schedules`.
 To run the unit tests for each scheduler, run:
 
 `python -m unittest simulator.tests`
+
+## Notebooks
+
+The experimentation for the parameter values were done using Jupyter notebook.
+You can view it on GitHub directly, but to run locally:
+
+`pip install -r requirements.txt`
+
+`jupyter notebook`
+
+A new browser should open based on your local Jupyter settings.
