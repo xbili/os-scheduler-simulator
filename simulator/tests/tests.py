@@ -92,7 +92,7 @@ class FCFSTest(unittest.TestCase, SchedulerTest):
 
 class RRTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
-        self.scheduler = RoundRobin(4)
+        self.scheduler = RoundRobin()
 
     def tearDown(self):
         self.scheduler.reset()
@@ -138,7 +138,7 @@ class RRTest(unittest.TestCase, SchedulerTest):
         """http://www.techtud.com/example/solved-example-rr-round-robin"""
 
         # Time quantum is 3 for this example
-        self.scheduler = RoundRobin(3)
+        self.scheduler = RoundRobin(time_quantum=3)
         processes = create_processes(
             (4, 0, 9),
             (5, 1, 2),

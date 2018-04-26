@@ -3,7 +3,7 @@ from simulator.schedulers.scheduler import Scheduler
 class RoundRobin(Scheduler):
     """Constant time quantum Round Robin scheduler."""
 
-    def __init__(self, time_quantum):
+    def __init__(self, time_quantum=4):
         super(RoundRobin, self).__init__()
 
         # Constant time quantum

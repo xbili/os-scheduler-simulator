@@ -37,7 +37,7 @@ if __name__ == '__main__':
     processes = read_input(input_file)
 
     # Schedulers
-    schedulers = [FCFS(), RoundRobin(4), SRTF(), SJF()]
+    schedulers = [FCFS(), RoundRobin(), SRTF(), SJF()]
     result_names = [RESULT_FCFS, RESULT_RR, RESULT_SRTF, RESULT_SJF]
 
     for idx, scheduler in enumerate(schedulers):
