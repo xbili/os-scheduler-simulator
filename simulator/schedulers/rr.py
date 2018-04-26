@@ -30,15 +30,12 @@ class RoundRobin(Scheduler):
         self.ordered = deque(processes)
 
         res = []
-        while self.q or self.ordered:
+        while self.q or self.ordered or self.active:
             self.enqueue_new_jobs()
             if self.timer_interrupt():
                 process = self.perform_schedule()
                 if process:
                     res += [(self.current_time, process.id)]
-                else:
-                    import pdb
-                    pdb.set_trace()
             self.step()
 
         return res
@@ -48,6 +45,7 @@ class RoundRobin(Scheduler):
 
         while self.ordered and self.ordered[0].arrive_time == self.current_time:
             self.q += [self.ordered.popleft()]
+
 
     def perform_schedule(self):
         """
@@ -89,7 +87,6 @@ class RoundRobin(Scheduler):
 
     def step(self):
         """Performs a single step in time."""
-
         # Increment interval in time quantum
         self.curr_q = (self.curr_q + 1) % self.time_q
 

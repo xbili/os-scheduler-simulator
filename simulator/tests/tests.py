@@ -97,6 +97,19 @@ class RRTest(unittest.TestCase, SchedulerTest):
     def tearDown(self):
         self.scheduler.reset()
 
+    def test_one_task(self):
+        """Tests round robin execution for a single task."""
+        processes = create_processes((1, 0, 20))
+        expected = {}
+        expected['schedule'] = [
+            (0, 1),
+            (4, 1),
+            (8, 1),
+            (12, 1),
+            (16, 1)]
+        expected['avg_waiting_time'] = 0.0
+        self.assert_process_schedule(processes, expected)
+
     def test_lecture_example(self):
         """Tests the example went through during lecture."""
         processes = create_processes(
@@ -138,15 +151,15 @@ class RRTest(unittest.TestCase, SchedulerTest):
             (3, 5),
             (5, 3),
             (8, 2),
-            (11, 1),
-            (14, 4),
+            (11, 4),
+            (14, 1),
             (17, 6),
             (20, 3),
             (23, 2),
-            (26, 1),
-            (28, 4),
+            (26, 4),
+            (29, 1),
             (31, 3)]
-        expected_avg_waiting_time = 16.17
+        expected_avg_waiting_time = 16.00
 
         expected = {
             'schedule': expected_schedule,
