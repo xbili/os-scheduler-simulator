@@ -58,6 +58,12 @@ class Scheduler(ABC):
         # Update waiting time
         self.waiting_time += len(self.q)
 
+    def enqueue_new_jobs(self):
+        """Enqueues new jobs that just came in into the ready queue."""
+
+        while self.ordered and self.ordered[0].arrive_time == self.current_time:
+            self.q += [self.ordered.popleft()]
+
     @property
     def avg_waiting_time(self):
         """Returns the average waiting time of a schedule."""

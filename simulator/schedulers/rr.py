@@ -31,13 +31,6 @@ class RoundRobin(Scheduler):
 
         return res
 
-    def enqueue_new_jobs(self):
-        """Enqueues new jobs that just came in into the ready queue."""
-
-        while self.ordered and self.ordered[0].arrive_time == self.current_time:
-            self.q += [self.ordered.popleft()]
-
-
     def perform_schedule(self):
         """
         Returns the next job to execute in the round robin algorithm.
