@@ -1,4 +1,3 @@
-import heapq
 from collections import deque
 
 from simulator.core.pq import PriorityQueue
