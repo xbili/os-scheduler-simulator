@@ -56,8 +56,7 @@ class Scheduler(ABC):
             self.active.burst_time -= 1
 
         # Update waiting time
-        for process in self.q:
-            self.waiting_time += 1
+        self.waiting_time += len(self.q)
 
     @property
     def avg_waiting_time(self):
