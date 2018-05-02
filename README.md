@@ -9,6 +9,14 @@ Experiment with the following schedulers:
 3. Shortest Remaining Time First (SRTF)
 4. Shortest Job First (SJF)
 
+## For Grading
+
+Clone repository and run:
+
+`python -m simulator examples/test1.in`
+
+The output will be found in the directory `schedules`.
+
 ## Getting Started
 
 To run:
