@@ -110,6 +110,32 @@ class FCFSTest(unittest.TestCase, SchedulerTest):
 
         self.assert_process_schedule(processes, expected)
 
+    def test_assignment_input(self):
+        """Runs the test using the given input for the assignment."""
+        processes = self.get_assignment_input()
+        expected = {}
+        expected['schedule'] = [
+            (0, 0),
+            (9, 1),
+            (17, 2),
+            (19, 3),
+            (30, 3),
+            (35, 1),
+            (37, 2),
+            (43, 0),
+            (60, 2),
+            (67, 0),
+            (69, 1),
+            (72, 3),
+            (90, 1),
+            (100, 0),
+            (110, 2),
+            (119, 3)]
+        expected['avg_waiting_time'] = 6.44
+
+        self.assert_process_schedule(processes, expected)
+
+
 class RRTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
         self.scheduler = RoundRobin()
@@ -180,7 +206,7 @@ class RRTest(unittest.TestCase, SchedulerTest):
 
         self.assert_process_schedule(processes, expected)
 
-    def test_given_example(self):
+    def test_assignment_input(self):
         """Runs the test using the given input for the assignment."""
         processes = self.get_assignment_input()
         expected = {}
@@ -222,6 +248,9 @@ class SRTFTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
         self.scheduler = SRTF()
 
+    def tearDown(self):
+        self.scheduler.reset()
+
     def test_simple_example(self):
         processes = create_processes(
             (1, 0, 10),
@@ -241,12 +270,43 @@ class SRTFTest(unittest.TestCase, SchedulerTest):
 
         self.assert_process_schedule(processes, expected)
 
-    def tearDown(self):
-        self.scheduler.reset()
+    def test_assignment_input(self):
+        """Runs the test using the given input for the assignment."""
+        processes = self.get_assignment_input()
+        expected = {}
+        expected['schedule'] = [
+            (0, 0),
+            (2, 2),
+            (4, 0),
+            (5, 3),
+            (7, 0),
+            (13, 1),
+            (30, 3),
+            (31, 1),
+            (33, 3),
+            (37, 2),
+            (43, 0),
+            (60, 2),
+            (62, 0),
+            (64, 2),
+            (65, 1),
+            (68, 2),
+            (72, 3),
+            (90, 1),
+            (100, 3),
+            (108, 2),
+            (117, 0)]
+        expected['avg_waiting_time'] = 4.50
+
+        self.assert_process_schedule(processes, expected)
+
 
 class SJFTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
         self.scheduler = SJF()
+
+    def tearDown(self):
+        self.scheduler.reset()
 
     def test_simple_example(self):
         processes = create_processes(
@@ -267,5 +327,27 @@ class SJFTest(unittest.TestCase, SchedulerTest):
 
         self.assert_process_schedule(processes, expected)
 
-    def tearDown(self):
-        self.scheduler.reset()
+    def test_assignment_input(self):
+        """Runs the test using the given input for the assignment."""
+        processes = self.get_assignment_input()
+        expected = {}
+        expected['schedule'] = [
+            (0, 0),
+            (9, 1),
+            (17, 2),
+            (19, 3),
+            (30, 3),
+            (35, 2),
+            (41, 1),
+            (43, 0),
+            (60, 2),
+            (67, 1),
+            (70, 3),
+            (78, 0),
+            (90, 1),
+            (100, 0),
+            (110, 2),
+            (119, 3)]
+        expected['avg_waiting_time'] = 7.12
+
+        self.assert_process_schedule(processes, expected)
