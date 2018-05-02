@@ -44,8 +44,6 @@ class SJF(Scheduler):
                 self.tau[self.active.id],
                 self.active.burst_time)
 
-        print(self.tau)
-
         return self.active
 
     def predict_next_burst(self, current_prediction, current_burst_time):
