@@ -24,6 +24,7 @@ class RoundRobin(Scheduler):
         if not self.active:
             if self.q:
                 self.active = self.q.popleft()
+            self.curr_q = 0
             return self.active
 
         # Active job still have yet to complete

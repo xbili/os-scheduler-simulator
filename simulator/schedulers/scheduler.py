@@ -42,8 +42,9 @@ class Scheduler(ABC):
         while self.q or self.ordered or self.active:
             self.enqueue_new_jobs()
             if self.timer_interrupt():
+                prev = self.active
                 process = self.perform_schedule()
-                if process:
+                if process and process != prev:
                     res += [(self.current_time, process.id)]
             self.step()
 

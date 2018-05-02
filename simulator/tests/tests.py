@@ -102,11 +102,7 @@ class RRTest(unittest.TestCase, SchedulerTest):
         processes = create_processes((1, 0, 20))
         expected = {}
         expected['schedule'] = [
-            (0, 1),
-            (4, 1),
-            (8, 1),
-            (12, 1),
-            (16, 1)]
+            (0, 1)]
         expected['avg_waiting_time'] = 0.0
         self.assert_process_schedule(processes, expected)
 
@@ -120,11 +116,7 @@ class RRTest(unittest.TestCase, SchedulerTest):
             (0, 1),
             (4, 2),
             (7, 3),
-            (10, 1),
-            (14, 1),
-            (18, 1),
-            (22, 1),
-            (26, 1)]
+            (10, 1)]
         expected_avg_waiting_time = 5.67
 
         expected = {
