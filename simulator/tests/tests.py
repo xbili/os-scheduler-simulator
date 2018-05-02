@@ -160,6 +160,61 @@ class RRTest(unittest.TestCase, SchedulerTest):
 
         self.assert_process_schedule(processes, expected)
 
+    def test_given_example(self):
+        """Runs the test using the given input for the assignment."""
+        processes = create_processes(
+            (0, 0, 9),
+            (1, 1, 8),
+            (2, 2, 2),
+            (3, 5, 2),
+            (3, 30, 5),
+            (1, 31, 2),
+            (2, 32, 6),
+            (0, 38, 8),
+            (2, 60, 7),
+            (0, 62, 2),
+            (1, 65, 3),
+            (3, 66, 8),
+            (1, 90, 10),
+            (0, 95, 10),
+            (2, 98, 9),
+            (3, 99, 8))
+
+        expected = {}
+        expected['schedule'] = [
+            (0, 0),
+            (4, 1),
+            (8, 2),
+            (10, 0),
+            (14, 3),
+            (16, 1),
+            (20, 0),
+            (30, 3),
+            (34, 1),
+            (36, 2),
+            (40, 3),
+            (41, 0),
+            (45, 2),
+            (47, 0),
+            (60, 2),
+            (64, 0),
+            (66, 2),
+            (69, 1),
+            (72, 3),
+            (90, 1),
+            (98, 0),
+            (102, 2),
+            (106, 1),
+            (108, 3),
+            (112, 0),
+            (116, 2),
+            (120, 3),
+            (124, 0),
+            (126, 2)]
+        expected['avg_waiting_time'] = 8.81
+
+        self.assert_process_schedule(processes, expected)
+
 class SRTFTest(unittest.TestCase, SchedulerTest):
     def setUp(self):
         self.scheduler = SRTF()
