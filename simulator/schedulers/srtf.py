@@ -32,6 +32,8 @@ class SRTF(Scheduler):
             self.active = nxt
             return self.active
 
+        return self.active
+
     def enqueue_new_jobs(self):
         """
         (OVERRIDE) - Scheduler.enqueue_new_jobs
@@ -40,7 +42,7 @@ class SRTF(Scheduler):
         """
         while self.ordered and self.ordered[0].arrive_time == self.current_time:
             nxt = self.ordered.popleft()
-            self.q.add(nxt, priority=0)
+            self.q.add(nxt, priority=nxt.burst_time)
 
     def timer_interrupt(self):
         """
