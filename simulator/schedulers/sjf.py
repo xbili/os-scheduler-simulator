@@ -13,9 +13,6 @@ class SJF(Scheduler):
         # Keeps track of all estimates for CPU burst time
         self.tau = {}
 
-        # Keeps track of the previous CPU burst time
-        self.prev_burst = 0
-
     def schedule(self, processes):
         """
         We make use of a heap to keep track of the task with the longest burst
@@ -31,25 +28,23 @@ class SJF(Scheduler):
         """
         while self.ordered and self.ordered[0].arrive_time <= self.current_time:
             nxt = self.ordered.popleft()
-            self.q.add(nxt, priority=0)
+            self.q.add(nxt, priority=self.tau[nxt.id])
 
     def perform_schedule(self):
         """
         Returns the next job to execute in the SJF algorithm, and updates the
         predictions for all processes in the ready queue.
         """
+        # Get next task
         self.active = self.q.pop() if self.q else None
 
-        # Update predition values
-        others = [entry[2] for _, entry in self.q.entry_finder.items()]
-        for process in others:
-            self.tau[process.id] = self.predict_next_burst(self.tau[process.id],
-                                                           self.prev_burst)
-            self.q.remove(process)
-            self.q.add(process, priority=self.tau[process.id])
-
         if self.active:
-            self.prev_burst = self.active.burst_time
+            # Update predition values
+            self.tau[self.active.id] = self.predict_next_burst(
+                self.tau[self.active.id],
+                self.active.burst_time)
+
+        print(self.tau)
 
         return self.active
 
