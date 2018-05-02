@@ -1,6 +1,7 @@
-# CS5250 Assignment 4
+# Operating System Scheduler Simulator
 
-OS scheduling simulator in Python.
+OS scheduling simulator in Python. This was written for CS5250: Advanced
+Operating Systems.
 
 Experiment with the following schedulers:
 
